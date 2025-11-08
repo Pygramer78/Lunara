@@ -20,12 +20,26 @@ int main(int argc, char** argv) {
         fclose(f);
 
         lexer_init(code);
-        Node* t = parse();
-        if (t) {
-            double res = eval(t, env);
-            (void)res;
+
+        while (1) {
+            Node* t = parse();
+            if (!t) break;
+            if (t->type == NODE_NUMBER && t->number_value == 0 &&
+                t->left == NULL && t->right == NULL) {
+                // pequeña protección contra parse vacío
+                free_node(t);
+                break;
+            }
+
+            eval(t, env);
             free_node(t);
+
+            /* Stop when EOF token was consumed */
+            extern Token current_token; // si no lo tienes, lo exponemos
+            if (current_token.type == TOKEN_EOF)
+                break;
         }
+
         free(code);
         env_free(env);
         return 0;
