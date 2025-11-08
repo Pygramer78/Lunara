@@ -13,38 +13,8 @@ so every comment is in spanish.
 #ifndef PARSER_H
 #define PARSER_H
 
+#include "ast.h"
 #include "lexer.h"
-
-typedef struct NodeList {
-    Node* expr;
-    struct NodeList* next;
-} NodeList;
-
-
-typedef enum {
-    NODE_NUMBER,
-    NODE_STRING,
-    NODE_CHAR,
-    NODE_VAR,
-    NODE_BINOP,
-    NODE_ASSIGN,
-    NODE_PRINT
-} NodeType;
-
-typedef struct Node {
-    NodeType type;
-    struct Node* left;
-    struct Node* right;
-    // Campo de variables
-    char* name;
-    double value;
-    char* strval;  // nuevo campo para strings
-    char op;
-
-    // Campo de builtins
-    NodeList* args; // <-- De print
-} Node;
-
 
 Node* parse(void);
 void free_node(Node* node);

@@ -6,31 +6,24 @@ typedef enum {
     TOKEN_IDENTIFIER,
     TOKEN_STRING,
     TOKEN_CHAR,
-    TOKEN_PRINT,
-    TOKEN_ASSIGN_KW,
-    TOKEN_ASSIGN,
+    TOKEN_PRINT,       // palabra clave print
+    TOKEN_ASSIGN_KW,   // palabra clave assign
+    TOKEN_ASSIGN,      // '='
+    TOKEN_COMMA,
     TOKEN_PLUS,
     TOKEN_MINUS,
     TOKEN_STAR,
     TOKEN_SLASH,
-    TOKEN_COMMA,
     TOKEN_LPAREN,
     TOKEN_RPAREN,
     TOKEN_EOF,
     TOKEN_UNKNOWN
 } TokenType;
 
-
-typedef enum {
-    false,
-    true
-} bool;
-
-
 typedef struct {
     TokenType type;
-    char* text;   // texto del token
-    double value; // si es un número
+    char* text;   /* texto del token (ident, string literal, symbol) */
+    double value; /* si es number */
 } Token;
 
 void lexer_init(const char* source);

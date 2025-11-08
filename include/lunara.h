@@ -6,9 +6,11 @@ c file.
 #ifndef LUNARA_H
 #define LUNARA_H
 
+#include "ast.h"
 #include "lexer.h"
 #include "parser.h"
 #include "eval.h"
 #include "env.h"
 
 #endif
+
