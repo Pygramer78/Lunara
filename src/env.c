@@ -8,11 +8,11 @@ Env* env_new(void) {
     return e;
 }
 
-void env_set(Env* env, const char* name, double value) {
+void env_set_num(Env* env, const char* name, double value) {
     EnvVar* var = env->vars;
     while (var) {
         if (strcmp(var->name, name) == 0) {
-            var->value = value;
+            var->num_value = value;
             return;
         }
         var = var->next;
@@ -20,7 +20,7 @@ void env_set(Env* env, const char* name, double value) {
 
     EnvVar* new_var = malloc(sizeof(EnvVar));
     new_var->name = strdup(name);
-    new_var->value = value;
+    new_var->num_value = value;
     new_var->next = env->vars;
     env->vars = new_var;
 }
@@ -29,7 +29,7 @@ double env_get(Env* env, const char* name) {
     EnvVar* var = env->vars;
     while (var) {
         if (strcmp(var->name, name) == 0)
-            return var->value;
+            return var->num_value;
         var = var->next;
     }
     return 0.0;

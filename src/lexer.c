@@ -42,6 +42,29 @@ Token next_token() {
             return t;
         }
 
+        // Cadenas: "texto"
+        if (c == '"') {
+            pos++;
+            char buf[256];
+            int i = 0;
+            while (src[pos] != '"' && src[pos] != '\0') {
+                buf[i++] = src[pos++];
+            }
+            buf[i] = '\0';
+            if (src[pos] == '"') pos++; // cerrar comillas
+            return make_token(TOKEN_STRING, buf);
+        }
+
+        // Caracteres: 'a'
+        if (c == '\'') {
+            pos++;
+            char ch = src[pos++];
+            if (src[pos] == '\'') pos++; // cerrar comillas simples
+            char buf[2] = { ch, '\0' };
+            return make_token(TOKEN_CHAR, buf);
+        }
+
+
         // Palabras reservadas o identificadores
         if (isalpha(c)) {
             char buf[64];

@@ -3,12 +3,17 @@
 #include <string.h>
 #include "../include/lunara.h"
 
-int main() {
+int main(int argc, char argv[]) {
     Env* env = env_new();
     char line[256];
 
     printf("Lunara Interpreter v0.1\n");
     printf("Escribe 'exit' para salir.\n");
+
+    if (argc == 1) {
+        FILE lunaFile;
+        
+    }
 
     while (1) {
         printf(">>> ");

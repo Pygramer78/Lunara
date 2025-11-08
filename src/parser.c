@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "../include/parser.h"
 
 static Token current_token;
@@ -25,6 +26,20 @@ Node* make_node(NodeType type, Node* left, Node* right, double value) {
 Node* parse_factor() {
     if (current_token.type == TOKEN_NUMBER) {
         Node* node = make_node(NODE_NUMBER, NULL, NULL, current_token.value);
+        free_token(current_token);
+        current_token = next_token();
+        return node;
+    }
+    else if (current_token.type == TOKEN_STRING) {
+        Node* node = make_node(NODE_STRING, NULL, NULL, 0);
+        node->strval = strdup(current_token.text);
+        free_token(current_token);
+        current_token = next_token();
+        return node;
+    }
+    else if (current_token.type == TOKEN_CHAR) {
+        Node* node = make_node(NODE_CHAR, NULL, NULL, 0);
+        node->strval = strdup(current_token.text);
         free_token(current_token);
         current_token = next_token();
         return node;
@@ -92,6 +107,70 @@ Node* parse_statement() {
         assign->name = name;
         return assign;
     }
+
+    // print <expr>
+    if (current_token.type == TOKEN_PRINT) {
+        free_token(current_token);
+        current_token = next_token();
+
+        NodeList* head = NULL;
+        NodeList* tail = NULL;
+
+        // OPCIONAL: permitir print(...)
+        bool paren = false;
+        if (current_token.type == TOKEN_LPAREN) {
+            paren = true;
+            free_token(current_token);
+            current_token = next_token();
+        }
+
+        // Manejar print vacío
+        if (paren && current_token.type == TOKEN_RPAREN) {
+            free_token(current_token);
+            current_token = next_token();
+
+            Node* p = make_node(NODE_PRINT, NULL, NULL, 0);
+            p->args = NULL;
+            return p;
+        }
+
+        // Leer argumentos infinitos
+        while (1) {
+            Node* expr = parse_expr();
+            if (!expr) return NULL;
+
+            NodeList* node = malloc(sizeof(NodeList));
+            node->expr = expr;
+            node->next = NULL;
+
+            if (!head) head = tail = node;
+            else {
+                tail->next = node;
+                tail = node;
+            }
+
+            if (current_token.type == TOKEN_COMMA) {
+                free_token(current_token);
+                current_token = next_token();
+                continue;
+            }
+
+            break;
+        }
+
+        // Cerrar paréntesis si había
+        if (paren) {
+            if (current_token.type != TOKEN_RPAREN) return NULL;
+            free_token(current_token);
+            current_token = next_token();
+        }
+
+        Node* print_node = make_node(NODE_PRINT, NULL, NULL, 0);
+        print_node->args = head;
+        return print_node;
+    }
+
+
     return parse_expr();
 }
 
