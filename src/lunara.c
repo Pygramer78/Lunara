@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    printf("Lunara REPL v0.1 — write 'exit' to quit\n");
+    printf("Lunara REPL. write 'exit' to quit\n");
 
     while (1) {
         printf(">>> ");

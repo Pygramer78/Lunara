@@ -2,4 +2,4 @@ print "Testing"
 assign string = "string"
 assign numtest = 16
 assign numtest2 = 16
-print numtest, numtest2, "string"
+print(numtest, numtest2, "string")

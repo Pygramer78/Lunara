@@ -26,7 +26,7 @@ double eval(Node* node, Env* env) {
         case NODE_VAR: {
             EnvVar* v = env_get_var(env, node->name);
             if (!v) {
-                fprintf(stderr, "Error: variable no definida '%s'\n", node->name);
+                fprintf(stderr, "Error: variable not assigned '%s'\n", node->name);
                 exit(1);
             }
             if (v->type == VAR_NUMBER) return v->num_value;
@@ -94,7 +94,7 @@ double eval(Node* node, Env* env) {
         }
 
         default:
-            fprintf(stderr, "Error: tipo de nodo desconocido\n");
+            fprintf(stderr, "Error: unknown type of node\n");
             exit(1);
     }
 }
