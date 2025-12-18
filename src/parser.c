@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 /* estado interno del parser */
-static Token current_token;
+Token current_token;
 
 /* funciones helper (no exportadas) */
 static Node* parse_expr(void);

@@ -15,7 +15,7 @@ so every comment is in spanish.
 
 #include "ast.h"
 #include "lexer.h"
-
+extern Token current_token;
 Node* parse(void);
 void free_node(Node* node);
 
